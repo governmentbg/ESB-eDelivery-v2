@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ComIbmWSInput.msgnode="ComIbmWSInput.msgnode" xmlns:ComIbmWSReply.msgnode="ComIbmWSReply.msgnode" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:ed_ed_mime.subflow="ed/ed_mime.subflow" xmlns:eflow="http://www.ibm.com/wbi/2005/eflow" xmlns:gen_ESB_eDeliveryInputCatchHandler.subflow="gen/ESB_eDeliveryInputCatchHandler.subflow" xmlns:gen_ESB_eDeliveryInputFailureHandler.subflow="gen/ESB_eDeliveryInputFailureHandler.subflow"
+    xmlns:gen_ESB_eDeliveryInputTimeoutHandler.subflow="gen/ESB_eDeliveryInputTimeoutHandler.subflow" xmlns:utility="http://www.ibm.com/wbi/2005/eflow_utility" nsURI="ed/ed_v2_mime.msgflow" nsPrefix="ed_ed_v2_mime.msgflow">
+  <eClassifiers xmi:type="eflow:FCMComposite" name="FCMComposite_1">
+    <eSuperTypes href="http://www.ibm.com/wbi/2005/eflow#//FCMBlock"/>
+    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="Property.eDeliveryBlobURL" name="eDeliveryBlobURL" lowerBound="1">
+      <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eStructuralFeatures>
+    <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="Property.eDeliveryAPIURL" name="eDeliveryAPIURL" lowerBound="1">
+      <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eStructuralFeatures>
+    <translation xmi:type="utility:TranslatableString" key="ed_v2_mime" bundleName="ed/ed_v2_mime" pluginId="ESB_eDelivery_v2"/>
+    <colorGraphic16 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/ESB_eDelivery_v2/icons/full/obj16/ed_v2_mime.gif"/>
+    <colorGraphic32 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/ESB_eDelivery_v2/icons/full/obj30/ed_v2_mime.gif"/>
+    <composition>
+      <nodes xmi:type="ComIbmWSReply.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_3" location="1197,135">
+        <translation xmi:type="utility:ConstantString" string="HTTP Reply"/>
+      </nodes>
+      <nodes xmi:type="gen_ESB_eDeliveryInputTimeoutHandler.subflow:FCMComposite_1" xmi:id="FCMComposite_1_2" location="607,104">
+        <translation xmi:type="utility:ConstantString" string="ESB_eDeliveryInputTimeoutHandler"/>
+      </nodes>
+      <nodes xmi:type="gen_ESB_eDeliveryInputCatchHandler.subflow:FCMComposite_1" xmi:id="FCMComposite_1_4" location="619,175">
+        <translation xmi:type="utility:ConstantString" string="ESB_eDeliveryInputCatchHandler"/>
+      </nodes>
+      <nodes xmi:type="gen_ESB_eDeliveryInputFailureHandler.subflow:FCMComposite_1" xmi:id="FCMComposite_1_5" location="614,33">
+        <translation xmi:type="utility:ConstantString" string="ESB_eDeliveryInputFailureHandler"/>
+      </nodes>
+      <nodes xmi:type="ComIbmWSInput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_6" location="35,144" URLSpecifier="/ed2/upload*" useHTTPS="true" setDestinationList="true" labelPrefix="/ed2/upload*" parseQueryString="true" messageDomainProperty="MIME">
+        <translation xmi:type="utility:ConstantString" string="HTTPS /ed2/uplaod*"/>
+      </nodes>
+      <nodes xmi:type="ed_ed_mime.subflow:FCMComposite_1" xmi:id="FCMComposite_1_1" location="684,278">
+        <translation xmi:type="utility:ConstantString" string="ed_mime"/>
+      </nodes>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_6" targetNode="FCMComposite_1_3" sourceNode="FCMComposite_1_5" sourceTerminalName="OutTerminal.Output_1" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_7" targetNode="FCMComposite_1_3" sourceNode="FCMComposite_1_2" sourceTerminalName="OutTerminal.Output_1" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_8" targetNode="FCMComposite_1_3" sourceNode="FCMComposite_1_4" sourceTerminalName="OutTerminal.Output_1" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_10" targetNode="FCMComposite_1_5" sourceNode="FCMComposite_1_6" sourceTerminalName="OutTerminal.failure" targetTerminalName="InTerminal.Input_1"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_11" targetNode="FCMComposite_1_2" sourceNode="FCMComposite_1_6" sourceTerminalName="OutTerminal.timeout" targetTerminalName="InTerminal.Input_1"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_12" targetNode="FCMComposite_1_4" sourceNode="FCMComposite_1_6" sourceTerminalName="OutTerminal.catch" targetTerminalName="InTerminal.Input_1"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_1" targetNode="FCMComposite_1_1" sourceNode="FCMComposite_1_6" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.Input"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_2" targetNode="FCMComposite_1_3" sourceNode="FCMComposite_1_1" sourceTerminalName="OutTerminal.Output" targetTerminalName="InTerminal.in"/>
+    </composition>
+    <propertyOrganizer>
+      <propertyDescriptor groupName="Group.Basic" configurable="true" userDefined="true" describedAttribute="Property.eDeliveryBlobURL">
+        <propertyName xmi:type="utility:TranslatableString" key="Property.eDeliveryBlobURL" bundleName="ed/ed_v2_mime" pluginId="ESB_eDelivery_v2"/>
+        <propertyDescriptor groupName="Group.Basic" configurable="true" userDefined="true" describedAttribute="Property.eDeliveryAPIURL">
+          <propertyName xmi:type="utility:TranslatableString" key="Property.eDeliveryAPIURL" bundleName="ed/ed_v2_mime" pluginId="ESB_eDelivery_v2"/>
+        </propertyDescriptor>
+      </propertyDescriptor>
+    </propertyOrganizer>
+    <stickyBoard/>
+  </eClassifiers>
+</ecore:EPackage>

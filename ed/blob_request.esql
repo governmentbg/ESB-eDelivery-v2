@@ -1,0 +1,54 @@
+BROKER SCHEMA ed
+
+
+CREATE COMPUTE MODULE blob_request
+	DECLARE eDeliveryBlobURL EXTERNAL CHARACTER '';
+	
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		
+		SET OutputRoot.Properties = InputRoot.Properties;
+		
+		SET OutputRoot.HTTPRequestHeader."Dp-Miscinfo" = InputRoot.HTTPInputHeader."Dp-Miscinfo";
+		SET OutputRoot.HTTPRequestHeader."Accept" = InputRoot.HTTPInputHeader."Accept";
+		SET OutputRoot.HTTPRequestHeader."Content-Type" = InputRoot.HTTPInputHeader."Content-Type";
+		SET OutputRoot.HTTPRequestHeader."Content-Length" = InputRoot.HTTPInputHeader."Content-Length";
+	
+		SET OutputRoot.MIME = InputRoot.MIME;
+		
+		
+		DECLARE	ReplaceRequestURI CHARACTER '';
+		
+		SET ReplaceRequestURI = REPLACE(InputLocalEnvironment.HTTP.Input.RequestLine.RequestURI, '/ed2/upload/blobs','/api/v1/blobs');
+		
+		SET OutputLocalEnvironment.Destination.HTTP.RequestURL = eDeliveryBlobURL || ReplaceRequestURI;
+		
+		SET OutputLocalEnvironment.Destination.HTTP.RequestLine.Method = InputLocalEnvironment.HTTP.Input.RequestLine.Method ;
+		
+		IF InputRoot.HTTPInputHeader."X-Query-String" IS NOT NULL THEN
+			SET OutputLocalEnvironment.Destination.HTTP.RequestLine.RequestURI = eDeliveryBlobURL || ReplaceRequestURI ||'?'||InputRoot.HTTPInputHeader."X-Query-String";
+		ELSE
+			SET OutputLocalEnvironment.Destination.HTTP.RequestLine.RequestURI = eDeliveryBlobURL || ReplaceRequestURI;
+		END IF;
+		 
+		-- 172.23.151.76
+		-- 83.228.89.112
+		-- edelivery-test-blobs.egov.bg
+		
+		RETURN TRUE;
+	END;
+
+	CREATE PROCEDURE CopyMessageHeaders() BEGIN
+		DECLARE I INTEGER 1;
+		DECLARE J INTEGER;
+		SET J = CARDINALITY(InputRoot.*[]);
+		WHILE I < J DO
+			SET OutputRoot.*[I] = InputRoot.*[I];
+			SET I = I + 1;
+		END WHILE;
+	END;
+
+	CREATE PROCEDURE CopyEntireMessage() BEGIN
+		SET OutputRoot = InputRoot;
+	END;
+END MODULE;

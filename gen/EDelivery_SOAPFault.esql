@@ -1,0 +1,38 @@
+BROKER SCHEMA gen
+
+
+
+CREATE COMPUTE MODULE EDelivery_SOAPFault
+DECLARE ns NAMESPACE 'http://schemas.xmlsoap.org/soap/envelope/';
+
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		
+/*	
+    "type": "https://tools.ietf.org/html/rfc7231#section-6.5.1",
+    "title": "One or more validation errors occurred.",
+    "status": 400,
+    "traceId": "00-61473c4be98e7a63f8c074a4853ef0a6-e1c569814cba3ac9-00",
+    "errors": {
+        "profileIdentifier": [
+            "A value for the 'profileIdentifier' parameter or property was not provided."
+        ]
+    }
+}*/
+		
+--		SET OutputLocalEnvironment.Destination.HTTP.ReplyStatusCode = InputRoot.HTTPResponseHeader."X-Original-HTTP-Status-Code";
+		SET OutputLocalEnvironment.Destination.HTTP.ReplyStatusCode = InputRoot.HTTPResponseHeader."X-Original-HTTP-Status-Code";
+		SET OutputRoot.JSON.Data.failureOrigin = 'EDELIVERY';
+		
+		IF InputRoot.SOAP.Body.ns:Fault.faultcode IS NOT NULL THEN
+			SET OutputRoot.JSON.Data.cause[1].code = InputRoot.SOAP.Body.ns:Fault.faultcode;
+			SET OutputRoot.JSON.Data.cause[1].message = InputRoot.SOAP.Body.ns:Fault.faultstring;
+		ELSE
+			SET OutputRoot.JSON.Data.cause[1].code = InputRoot.HTTPResponseHeader."X-Original-HTTP-Status-Code";
+			SET OutputRoot.JSON.Data.cause[1].message = InputRoot.HTTPResponseHeader."X-Original-HTTP-Status-Line";
+		END IF;
+		
+		
+		RETURN TRUE;
+	END;
+END MODULE;
